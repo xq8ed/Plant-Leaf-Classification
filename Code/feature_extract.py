@@ -114,8 +114,11 @@ def intersectp(paxis,contour):
   line1 = LineString(axis_line)
   line2 = LineString(contour)
   inter_sect = line1.intersection(line2)
-  itr = np.array(inter_sect, dtype=np.int32) # here type of inter_sect was multipoint which was not iterable therefore i had to change it to numpy array
-  return itr
+  itr1 = [np.array(pp.coords, dtype=np.int32) for pp in inter_sect] # list of arrays with different sizes each array has coords of a geometric object eg point, linestring
+  itr2 = np.hstack(ii.reshape(1, -1) for ii in itr1) # making single array of all coords [x1, y1, x2, y2, x3, y3, ...]
+  itr3 = itr2.reshape(int(len(itr2[0])/2), 2) # making pairs [[x1 y1], [x2 y2], [x3 y3], ..... ]
+  itr4 = np.unique(itr3, axis=0) # removing duplicate pairs
+  return itr4
 
 def shift_to_start_point(contour, intersection_coords):
   distances = dict()
@@ -148,6 +151,15 @@ def norm_ccd(signature):
     dis.append(signature[i] / disum)
   return dis
 
+def interp_ccd(array1d):
+  """ Takes 1d array
+  returns interpolated 1d array of 256 values """
+  x = np.arange(1, len(array1d)+1)
+  y = array1d
+  f = interpolate.interp1d(x, y)
+  xnew = np.linspace(1, len(array1d), num=256).astype(int)
+  ynew = f(xnew)
+  return ynew
 
 def feat_ext(image):
     smooth = extract_shape(image) # get shape of leaf
