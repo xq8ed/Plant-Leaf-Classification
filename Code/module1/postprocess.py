@@ -37,5 +37,4 @@ def postp(img):
     mask = np.zeros(img.shape[:2], np.uint8)
     noise_free_cnt = rem_noise(img)
     cv.drawContours(mask, [noise_free_cnt], 0, 255, -1)     #--- Applying noise free contour to mask
-    
     return mask

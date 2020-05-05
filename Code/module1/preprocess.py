@@ -6,16 +6,6 @@ module for preprocessing on raw image
 import cv2 as cv
 import numpy as np
 
-
-
-def save_binary():
-  directory = '/content/drive/My Drive/Project/Samples/Converted/'
-  if(cv.imwrite(directory+filename+'_bw.png', crop)==True):
-    print('Image written succesfully')
-  else:
-    print('Failed to write Image')
-
-
 def prep(path, filename, ext):
     """ Returns binary image 
         pass arguments as string
@@ -54,7 +44,5 @@ def prep(path, filename, ext):
     #--- cropping gray image ---
     #print("Cropped gray image after applying mask :")
     crop_gray = masked_gray[y-20:y+h+20, x-20:x+w+20]
-    
-    # save_binary()
     
     return crop_bin

@@ -1,16 +1,11 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr 10 18:45:17 2020
-
-@author: Ganesh
-"""
 import numpy as np
 import cv2 as cv
 from math import sqrt
 import scipy.ndimage as ndi
+from scipy import interpolate
 from shapely.geometry import LineString
 
-from postprocess import get_contour
+from module1.postprocess import get_contour
 
 
 def get_center(contour):
@@ -109,7 +104,6 @@ def intersectp(paxis,contour):
       Returns : coords of intersecting points
   """
   axis_ends = np.array([paxis['p1'], paxis['p2']], dtype=np.int32)
-  #print(line_ends)
   axis_line = connect(axis_ends)
   line1 = LineString(axis_line)
   line2 = LineString(contour)
@@ -160,18 +154,3 @@ def interp_ccd(array1d):
   xnew = np.linspace(1, len(array1d), num=256).astype(int)
   ynew = f(xnew)
   return ynew
-
-def feat_ext(image):
-    smooth = extract_shape(image) # get shape of leaf
-    # Step1: get contour of shape
-    shape = get_contour(smooth)
-    # Step2: find starting point based on principal axis intersection with contour
-    shape = shift_to_origin(shape)
-    mjr, mnr = principal_axis(smooth)
-    itr_coords = intersectp(mjr, shape) 
-    shape_rolled = shift_to_start_point(shape, itr_coords)
-    # Step3: get the ccd signature
-    cx, cy = get_center(shape_rolled)
-    shape_sign = get_ccd(shape_rolled, cx, cy)
-    norm_shape_sign = norm_ccd(shape_sign)
-    
