@@ -5,10 +5,9 @@ Created on Fri Apr 10 16:09:40 2020
 @author: Ganesh
 """
 import matplotlib.pyplot as plt
-import preprocess
-import postprocess
+from module1 import preprocess, postprocess
 
-path = 'D:\Engineering\BE\Project\Datasets\Samples\RGB\\'
+path = '../Data/Samples/RGB/'
 filename ='leaf_11'
 ext = '.JPG'
 
@@ -19,4 +18,3 @@ plt.show()
 img2 = postprocess.postp(img)
 plt.imshow(img2, cmap = 'gray')
 plt.show()
-

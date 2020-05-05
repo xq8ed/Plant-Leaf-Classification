@@ -9,7 +9,7 @@ import numpy as np
 
 
 def save_binary():
-  directory = '/content/drive/My Drive/Project/Samples/Converted/'
+  directory = '../Data/Samples/extracted/'
   if(cv.imwrite(directory+filename+'_bw.png', crop)==True):
     print('Image written succesfully')
   else:
