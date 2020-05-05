@@ -4,4 +4,4 @@ def extract_margin(img):
       new_size = size
   else:
       new_size = size+1
-    return(cv.medianBlur(img, new_size))
+  return(cv.medianBlur(img, new_size))

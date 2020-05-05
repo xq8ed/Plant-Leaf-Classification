@@ -2,6 +2,7 @@ import numpy as np
 import cv2 as cv
 from math import sqrt
 import scipy.ndimage as ndi
+from scipy import interpolate
 from shapely.geometry import LineString
 
 from module1.postprocess import get_contour
