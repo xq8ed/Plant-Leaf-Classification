@@ -22,4 +22,3 @@ def feat_ext(image):
     interp_shape_sign = shp.interp_ccd(norm_shape_sign)
 
     return norm_shape_sign, interp_shape_sign
-    #med_blur = mrg.extract_margin(image)
