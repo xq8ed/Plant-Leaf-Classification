@@ -1,12 +1,12 @@
+""" Generating feature vector for shape """
+
 import numpy as np
 import cv2 as cv
 from math import sqrt
 import scipy.ndimage as ndi
 from scipy import interpolate
 from shapely.geometry import LineString
-
 from module1.postprocess import get_contour
-
 
 def get_center(contour):
   """ Returns centroid coords calculated with cv moments """
@@ -151,6 +151,21 @@ def interp_ccd(array1d):
   x = np.arange(1, len(array1d)+1)
   y = array1d
   f = interpolate.interp1d(x, y)
-  xnew = np.linspace(1, len(array1d), num=256).astype(int)
+  xnew = np.linspace(1, len(array1d), num=128).astype(int)
   ynew = f(xnew)
   return ynew
+
+def shape_vector(img, flag = False):
+  smooth = extract_shape(img) # get shape of leaf
+  # 1 : get contour of shape
+  shape = shift_to_origin(get_contour(smooth))
+  # 2 : find starting point based on principal axis intersection with contour
+  mjr, mnr = principal_axis(smooth)
+  itr_coords = intersectp(mjr, shape)
+  shape_rolled = shift_to_start_point(shape, itr_coords)
+  # 3 : get the CCD signature
+  cx, cy = get_center(shape_rolled)
+  shape_sign = get_ccd(shape_rolled, cx, cy)
+  norm_shape_sign = norm_ccd(shape_sign)
+  interp_shape_sign = interp_ccd(norm_shape_sign)
+  return interp_shape_sign

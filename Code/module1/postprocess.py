@@ -1,13 +1,7 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr 10 18:18:08 2020
-
-@author: Ganesh
-"""
+"""post-processing on cropped binary-image"""
 import cv2 as cv
 import numpy as np
 import scipy.ndimage as ndi
-
 
 def get_contour(img):
     """returns the coords of the longest contour"""
@@ -33,7 +27,7 @@ def rem_noise(image):
     
     return opening
 
-def postp(img):    
+def postp(img, flag = False):
     mask = np.zeros(img.shape[:2], np.uint8)
     noise_free_cnt = rem_noise(img)
     cv.drawContours(mask, [noise_free_cnt], 0, 255, -1)     #--- Applying noise free contour to mask
